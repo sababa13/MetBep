@@ -9,3 +9,7 @@ exports.employeeBoard = (req, res) => {
 exports.adminBoard = (req, res) => {
     res.status(200).send("Admin Content.");
 };
+
+exports.startPage = (req, res) => {
+    res.json({message: "Logout successful"});
+};
