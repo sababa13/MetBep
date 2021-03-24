@@ -1,18 +1,70 @@
-const ronin     = require( 'ronin-server' )
-const mocks     = require( 'ronin-mocks' )
-var mongoose    = require('mongoose')
-const server    = ronin.server()
+const express   = require('express');
+const app       = express();
+const dbConfig  = require ('./config/db.config');
+var fs          = require("fs");
+var routePath   = "./routes/";
 
-//Set up default mongoose connection
-var mongoDB = 'mongodb://127.0.0.1';
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+const db = require("./models");
+const Role = db.role;
 
-//Get the default connection
-var db = mongoose.connection;
+db.mongoose
+  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log("Successfully connect to MongoDB.");
+    initial();
+  })
+  .catch(err => {
+    console.error("Connection error", err);
+    process.exit();
+  });
 
-//Bind connection to error event (to get notification of connection errors)
-db.on('error', console.error.bind(console, 'MongoDB connection error: '));
-// database.connect( process.env.CONNECTIONSTRING )
-server.use( '/', mocks.server( server.Router(), false, false ) )
+app.use(express.json()); //Used to parse JSON bodies
+app.use(express.urlencoded()); //Parse URL-encoded bodies
 
-server.start()
+// Route to Start Page
+app.get("/start", (req, res) => {
+  res.json({ message: "Welcome to MetBep application." });
+});
+
+/**
+* Dyanmic Routing
+* Adds all routes from routes folder
+*/ 
+fs.readdirSync(routePath).forEach(function(file) {
+    var route = routePath + file;
+    require(route)(app);
+});
+
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.\n`);
+});
+
+function initial() {
+  Role.estimatedDocumentCount((err, count) => {
+    if (!err && count === 0) {
+      new Role({
+        role_name: "employee"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+
+        console.log("Added 'employee' to roles collection");
+      });
+
+      new Role({
+        role_name: "admin"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+
+        console.log("Added 'admin' to roles collection");
+      });
+    }
+  });
+}
