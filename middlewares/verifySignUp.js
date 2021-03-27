@@ -2,7 +2,7 @@ const db = require("../models");
 const ROLES = db.ROLES;
 const Employee = db.employee;
 
-checkDuplicateUsername = (req, res, next) => {
+checkDuplicateUsernameOrEmail = (req, res, next) => {
 
   Employee.findOne({
     username: req.body.username
@@ -51,7 +51,7 @@ checkRolesExisted = (req, res, next) => {
 };
 
 const verifySignUp = {
-  checkDuplicateUsername,
+  checkDuplicateUsernameOrEmail,
   checkRolesExisted
 };
 

@@ -9,6 +9,8 @@ const Employee = mongoose.model(
       username: {type: String, unique: true, maxlength: 30},
       gender: {type: String, enum: ["male", "female"]},
       password: {type: String, required: true, minlength: 7},
+      reset_password_token: {type: String},
+      reset_password_expires: {type: Date},
       email: {type: String, required: true, lowercase: true, trim: true, unique: true, sparse: true},
       city: {type: String, unique: false},
       medical_institution: {type: String, required: true, trim: true, unique: false},
