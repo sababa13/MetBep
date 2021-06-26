@@ -34,8 +34,8 @@ app.get("/start", (req, res) => {
 * Adds all routes from routes folder
 */ 
 fs.readdirSync(routePath).forEach(function(file) {
-    var route = routePath + file;
-    require(route)(app);
+  var route = routePath + file;
+  require(route)(app);
 });
 
 const PORT = process.env.PORT || 8000;
@@ -64,6 +64,16 @@ function initial() {
         }
 
         console.log("Added 'admin' to roles collection");
+      });
+
+      new Role({
+        role_name: "patient"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+
+        console.log("Added 'patient' to roles collection");
       });
     }
   });
