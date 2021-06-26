@@ -6,6 +6,8 @@ db.mongoose = mongoose;
 
 db.employee = require("./employee");
 db.role = require("./role");
-db.ROLES = ["employee", "admin"];
+db.patient = require("./patient");
+db.ROLES = ["employee", "admin", "patient"];
+db.patientQuestionnaire = require("./patientQuestionnaire");
 
 module.exports = db;

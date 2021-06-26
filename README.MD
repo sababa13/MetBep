@@ -12,6 +12,7 @@ npm install async
 npm install crypto
 npm install --save nodemailer-smtp-transport
 npm install express mongoose body-parser cors jsonwebtoken bcryptjs --save
+npm i mongodb-memory-server jest
 ```
 ## Run backend
 ```
@@ -54,6 +55,14 @@ Kill the process currently using a port on localhost in Windows
 
 If MongoDB giving 'duplicate key error' on non-unique fields:
 you'll need to explicitly drop the index to get rid of it.
+
+ENOENT: no such file or directory:
+1. Copy the path of package.json
+2. Open terminal and write:
+```cd your_path_to_package.json```
+3. Press ENTER
+4. Then Write:
+```npm install``
 
 ### REST API
 
@@ -110,3 +119,8 @@ POST http://localhost:8000/users/reset-password/YOUR_TOKEN
 
 #### More information about 
 [Nodemailer](https://nodemailer.com/message/)
+
+POST   http://localhost:8000/users/me/questionnaire
+```json
+
+```

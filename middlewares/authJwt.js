@@ -3,6 +3,7 @@ const config = require("../config/auth.config.js");
 const db = require("../models");
 const Employee = db.employee;
 const Role = db.role;
+const Patient = db.patient;
 
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
@@ -82,9 +83,41 @@ isEmployee = (req, res, next) => {
   });
 };
 
+isPatient = (req, res, next) => {
+  Patient.findById(req.patientId).exec((err, patient) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+
+    Role.find(
+      {
+        _id: { $in: patient.roles }
+      },
+      (err, roles) => {
+        if (err) {
+          res.status(500).send({ message: err });
+          return;
+        }
+
+        for (let i = 0; i < roles.length; i++) {
+          if (roles[i].role_name === "patient") {
+            next();
+            return;
+          }
+        }
+
+        res.status(403).send({ message: "Require Patient Role!" });
+        return;
+      }
+    );
+  });
+};
+
 const authJwt = {
   verifyToken,
   isAdmin,
-  isEmployee
+  isEmployee,
+  isPatient
 };
 module.exports = authJwt;

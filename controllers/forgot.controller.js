@@ -27,6 +27,7 @@ exports.forgotPassword = function(req, res) {
       Employee.findOne({
         email: req.body.email
       }).exec((err, employee) => {
+        console.log('Email: ', req.body.email);
         if (employee) {
           done(err, employee);
         } 
@@ -51,7 +52,7 @@ exports.forgotPassword = function(req, res) {
     function(token, employee, done) {
       var mailOptions = {
         to: employee.email,
-        from: 'YOUR_EMAIL',
+        from: 'ejovaekaterina@gmail.com',
         subject: 'MetBep Forgot Password',
         text: `Hi ${employee.username},\n\n` +
         'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
@@ -95,7 +96,7 @@ exports.resetPassword = function(req, res) {
           } else {
             var mailOptions = {
               to: employee.email,
-              from: 'YOUR_EMAIL',
+              from: 'ejovaekaterina@gmail.com',
               subject: 'MetBep Password Reset Confirmation',
               text: `Hi ${employee.username},\n\n` +
                 `This is a confirmation that the password for your account has just been changed.\n\n` +

@@ -7,7 +7,7 @@ const Employee = mongoose.model(
       first_name: {type: String, required: true, trim: true, maxlength: 30},
       last_name: {type: String, required: true, trim: true, maxlength: 30},
       username: {type: String, unique: true, maxlength: 30},
-      gender: {type: String, enum: ["male", "female"]},
+      gender: {type: String, default: "male", enum: ["male", "female"]},
       password: {type: String, required: true, minlength: 7},
       reset_password_token: {type: String},
       reset_password_expires: {type: Date},
